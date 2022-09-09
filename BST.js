@@ -15,7 +15,6 @@ const Tree = (array) => {
     return root;
   };
 
-
   const insert = (value, rootNode = getRoot()) => {
     //if the tree is empty, create a new node and set it to root
     if (rootNode === null) {
@@ -43,7 +42,7 @@ const Tree = (array) => {
       rootNode.left = deleteNode(value, rootNode.left);
     } else if (value > rootNode.data) {
       rootNode.right = deleteNode(value, rootNode.right);
-    } 
+    }
     //if value matches the same as the root nodes data
     else {
       //if node only has 1 child
@@ -58,6 +57,22 @@ const Tree = (array) => {
       rootNode.right = deleteNode(rootNode.data, rootNode.right);
     }
     return rootNode;
+  };
+
+  const find = (value, rootNode = getRoot()) => {
+    //if value doesn't exist it returns this string
+    if (rootNode === null) {
+      return "This node doesn't exist in the tree!"
+    }
+    //base case to return the node if the value is found
+    if (rootNode.data === value) {
+      return rootNode;
+    }
+    //recursively checks the left and right subtree until it hits the base case
+    if (value < rootNode.data) {
+      return find(value, rootNode.left);
+    } 
+    return find(value, rootNode.right);
   };
 
   //finds the minimum value given a root node
@@ -87,7 +102,7 @@ const Tree = (array) => {
     return newNode;
   };
 
-  return { setRoot, getRoot, insert, deleteNode };
+  return { setRoot, getRoot, insert, deleteNode, find };
 };
 
 /* -------------------------------------------------------------------------------------*/
