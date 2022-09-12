@@ -300,23 +300,33 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 /* -------------------------------------------------------------------------------------*/
 
+console.log("Driver Script for showing the functionality of the BST: ");
+console.log("");
 const randomArray = generateRandomArray(20, 20);
-const filteredArray = [...new Set(randomArray)].sort((a, b) => a - b);
-const testingArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-console.log(testingArray);
-let tree = Tree(testingArray);
+console.log("Starting Array", randomArray);
+let tree = Tree(randomArray);
 tree.setRoot();
-tree.insert(6);
-tree.insert(18);
-tree.insert(19);
-tree.insert(20);
+console.log("BST: ");
 prettyPrint(tree.getRoot());
+console.log("The tree is balanced", tree.isBalanced());
 console.log("Level Order Traversal: ", tree.levelOrder());
 console.log("Inorder traversal (left, root, right): ", tree.inorder());
 console.log("Preorder traversal (root, left, right): ", tree.preorder());
 console.log("Postorder traversal (left, right, root): ", tree.postorder());
-console.log("Height of Node: ", tree.height(tree.find(7)));
-console.log("Depth of Node: ", tree.depth(tree.find(7)));
-console.log("Is the tree balanced?", tree.isBalanced());
-tree.rebalance();
+console.log("----------------------------------------------------------------------");
+tree.insert(111);
+tree.insert(114);
+tree.insert(322);
+tree.insert(789);
+console.log("After inserting lots of numbers: ");
 prettyPrint(tree.getRoot());
+console.log("The tree is balanced", tree.isBalanced());
+tree.rebalance();
+console.log("----------------------------------------------------------------------");
+console.log("Rebalanced BST: ");
+prettyPrint(tree.getRoot());
+console.log("The tree is now balanced", tree.isBalanced());
+console.log("Level Order Traversal: ", tree.levelOrder());
+console.log("Inorder traversal (left, root, right): ", tree.inorder());
+console.log("Preorder traversal (root, left, right): ", tree.preorder());
+console.log("Postorder traversal (left, right, root): ", tree.postorder());
