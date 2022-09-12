@@ -146,12 +146,11 @@ const Tree = (array) => {
         if (callback) callback(currentNode);
         //set current node to the right
         currentNode = currentNode.right;
-
       }
     }
     //if no function was provided return the results array
     if (!callback) return results;
-  }
+  };
 
   //root, left, right
   const preorder = (callback) => {
@@ -175,7 +174,7 @@ const Tree = (array) => {
     }
     //if no function was provided, return the results array
     if (!callback) return results;
-  }
+  };
 
   //left, right, root
   const postorder = (callback) => {
@@ -198,9 +197,9 @@ const Tree = (array) => {
       //add current node to the beginning of results array so values will be in correct order
       results.unshift(currentNode.data);
     }
-     //if no function was provided, return the results array
+    //if no function was provided, return the results array
     if (!callback) return results;
-  }
+  };
 
   //takes a node and finds the number of edges in longest path to a leaf node
   const height = (rootNode = getRoot()) => {
@@ -212,13 +211,38 @@ const Tree = (array) => {
     let left = height(rootNode.left);
     let right = height(rootNode.right);
     return Math.max(left, right) + 1;
-  }
+  };
 
-  const depth = (value) => {
+  //takes a node and finds the number of edges to the root node
+  const depth = (value, rootNode = getRoot()) => {
+    //base case that returns -1 if node is null
+    if (rootNode === null) return -1;
+    //checks if the node is valid, and if not returns the message from the find() function;
+    if (!value.data) return find(value);
+    let dist = -1;
+    if (
+      //check if value is current node, if not, check the left and right subtree and update it's depth
+      value.data === rootNode.data ||
+      (dist = depth(value, rootNode.left)) >= 0 ||
+      (dist = depth(value, rootNode.right)) >= 0
+    )
+      return dist + 1;
+    return dist;
+  };
 
-  }
-
-  return { setRoot, getRoot, insert, deleteNode, find, levelOrder, inorder, preorder, postorder, height, depth };
+  return {
+    setRoot,
+    getRoot,
+    insert,
+    deleteNode,
+    find,
+    levelOrder,
+    inorder,
+    preorder,
+    postorder,
+    height,
+    depth,
+  };
 };
 
 /* -------------------------------------------------------------------------------------*/
@@ -262,3 +286,4 @@ console.log("Inorder traversal (left, root, right): ", tree.inorder());
 console.log("Preorder traversal (root, left, right): ", tree.preorder());
 console.log("Postorder traversal (left, right, root): ", tree.postorder());
 console.log("Height of Node: ", tree.height(tree.find(5)));
+console.log("Depth of Node: ", tree.depth(tree.find(4000)));
