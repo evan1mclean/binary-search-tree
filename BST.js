@@ -126,7 +126,83 @@ const Tree = (array) => {
     if (!callback) return results;
   };
 
-  return { setRoot, getRoot, insert, deleteNode, find, levelOrder };
+  //left, root, right
+  const inorder = (callback) => {
+    if (root === null) return;
+    //if root isn't null, create a stack and set current node as root
+    const stack = [];
+    const results = [];
+    let currentNode = root;
+    while (stack.length > 0 || currentNode !== null) {
+      if (currentNode !== null) {
+        //push all the nodes in the left subtree to the stack
+        stack.push(currentNode);
+        currentNode = currentNode.left;
+      } else {
+        //pop the top node off the stack and push it to the results
+        currentNode = stack.pop();
+        results.push(currentNode.data);
+        //if a function was provided, feed each node to the function
+        if (callback) callback(currentNode);
+        //set current node to the right
+        currentNode = currentNode.right;
+
+      }
+    }
+    //if no function was provided return the results array
+    if (!callback) return results;
+  }
+
+  //root, left, right
+  const preorder = (callback) => {
+    if (root === null) return;
+    //if root isn't null, create a stack with the root node in it
+    const stack = [root];
+    const results = [];
+    while (stack.length > 0) {
+      //pop the top value off the stack and set that as the current node and push data to results
+      let currentNode = stack.pop();
+      results.push(currentNode.data);
+      //if left/right isn't null, push it to the stack
+      if (currentNode.right !== null) {
+        stack.push(currentNode.right);
+      }
+      if (currentNode.left !== null) {
+        stack.push(currentNode.left);
+      }
+      //if function was provided, feed each node to the function
+      if (callback) callback(currentNode);
+    }
+    //if no function was provided, return the results array
+    if (!callback) return results;
+  }
+
+  //left, right, root
+  const postorder = (callback) => {
+    if (root === null) return;
+    //if root isn't null, create a stack with the root node in it
+    const stack = [root];
+    const results = [];
+    while (stack.length > 0) {
+      //pop the top value off the stack and set that as the current node and push data to results
+      let currentNode = stack.pop();
+      //if left/right isn't null, push it to the stack
+      if (currentNode.left !== null) {
+        stack.push(currentNode.left);
+      }
+      if (currentNode.right !== null) {
+        stack.push(currentNode.right);
+      }
+      //if function was provided, feed each node to the function
+      if (callback) callback(currentNode);
+      //add current node to the beginning of results array so values will be in correct order
+      results.unshift(currentNode.data);
+    }
+     //if no function was provided, return the results array
+    if (!callback) return results;
+  }
+
+  return { setRoot, getRoot, insert, deleteNode, find, levelOrder, inorder, preorder, postorder };
 };
 
 /* -------------------------------------------------------------------------------------*/
@@ -165,4 +241,7 @@ tree.insert(6);
 tree.insert(19);
 tree.insert(20); */
 prettyPrint(tree.getRoot());
-console.log(tree.levelOrder());
+console.log("Level Order Traversal: ", tree.levelOrder());
+console.log("Inorder traversal (left, root, right): ", tree.inorder());
+console.log("Preorder traversal (root, left, right): ", tree.preorder());
+console.log("Postorder traversal (left, right, root): ", tree.postorder());
