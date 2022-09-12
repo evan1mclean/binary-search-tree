@@ -230,6 +230,34 @@ const Tree = (array) => {
     return dist;
   };
 
+  const isBalanced = (rootNode = getRoot()) => {
+    if (rootNode === null) {
+      return true;
+    }
+    //calls height for left and right subtree
+    let left = height(rootNode.left);
+    let right = height(rootNode.right);
+    if (
+      //finds the difference of heights and recursively checks with every node to make sure all heights are correct
+      Math.abs(left - right) <= 1 &&
+      isBalanced(rootNode.left) === true &&
+      isBalanced(rootNode.right) === true
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  //Function for rebalancing the BST
+  const rebalance = () => {
+    //if balanced do nothing
+    if (isBalanced() === true) return;
+    //create new array with traversal function then sort/remove duplicates and rebuild the tree
+    let newArray = levelOrder();
+    let newFilteredArray = [...new Set(newArray)].sort((a, b) => a - b);
+    root = buildTree(newFilteredArray);
+  }
+
   return {
     setRoot,
     getRoot,
@@ -242,6 +270,8 @@ const Tree = (array) => {
     postorder,
     height,
     depth,
+    isBalanced,
+    rebalance
   };
 };
 
@@ -276,14 +306,17 @@ const testingArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 console.log(testingArray);
 let tree = Tree(testingArray);
 tree.setRoot();
-/* tree.insert(6); */
-/* tree.insert(18);
+tree.insert(6);
+tree.insert(18);
 tree.insert(19);
-tree.insert(20); */
+tree.insert(20);
 prettyPrint(tree.getRoot());
 console.log("Level Order Traversal: ", tree.levelOrder());
 console.log("Inorder traversal (left, root, right): ", tree.inorder());
 console.log("Preorder traversal (root, left, right): ", tree.preorder());
 console.log("Postorder traversal (left, right, root): ", tree.postorder());
-console.log("Height of Node: ", tree.height(tree.find(5)));
-console.log("Depth of Node: ", tree.depth(tree.find(4000)));
+console.log("Height of Node: ", tree.height(tree.find(7)));
+console.log("Depth of Node: ", tree.depth(tree.find(7)));
+console.log("Is the tree balanced?", tree.isBalanced());
+tree.rebalance();
+prettyPrint(tree.getRoot());
