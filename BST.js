@@ -62,7 +62,7 @@ const Tree = (array) => {
   const find = (value, rootNode = getRoot()) => {
     //if value doesn't exist it returns this string
     if (rootNode === null) {
-      return "This node doesn't exist in the tree!"
+      return "This node doesn't exist in the tree!";
     }
     //base case to return the node if the value is found
     if (rootNode.data === value) {
@@ -71,7 +71,7 @@ const Tree = (array) => {
     //recursively checks the left and right subtree until it hits the base case
     if (value < rootNode.data) {
       return find(value, rootNode.left);
-    } 
+    }
     return find(value, rootNode.right);
   };
 
@@ -102,7 +102,31 @@ const Tree = (array) => {
     return newNode;
   };
 
-  return { setRoot, getRoot, insert, deleteNode, find };
+  //function for level order traversal
+  const levelOrder = (callback) => {
+    if (root === null) return;
+    //if root isn't null, create a queue with the root in it
+    const queue = [root];
+    const results = [];
+    while (queue.length > 0) {
+      //remove front element of the queue and push it to the results
+      let currentNode = queue.shift();
+      results.push(currentNode.data);
+      //if left/right aren't null, push them to the queue
+      if (currentNode.left !== null) {
+        queue.push(currentNode.left);
+      }
+      if (currentNode.right !== null) {
+        queue.push(currentNode.right);
+      }
+      //if a function was provided, feed each node to the function
+      if (callback) callback(currentNode);
+    }
+    //if no function was provided, return the results array
+    if (!callback) return results;
+  };
+
+  return { setRoot, getRoot, insert, deleteNode, find, levelOrder };
 };
 
 /* -------------------------------------------------------------------------------------*/
@@ -141,3 +165,4 @@ tree.insert(6);
 tree.insert(19);
 tree.insert(20); */
 prettyPrint(tree.getRoot());
+console.log(tree.levelOrder());
