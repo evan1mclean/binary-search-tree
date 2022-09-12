@@ -202,7 +202,23 @@ const Tree = (array) => {
     if (!callback) return results;
   }
 
-  return { setRoot, getRoot, insert, deleteNode, find, levelOrder, inorder, preorder, postorder };
+  //takes a node and finds the number of edges in longest path to a leaf node
+  const height = (rootNode = getRoot()) => {
+    //base case that returns -1 if node is null
+    if (rootNode === null) return -1;
+    //checks if the node is valid, and if not returns the message from the find() function;
+    if (!rootNode.data) return find(rootNode);
+    //recursively finds the height of left and right subtrees and returns the bigger and adds 1
+    let left = height(rootNode.left);
+    let right = height(rootNode.right);
+    return Math.max(left, right) + 1;
+  }
+
+  const depth = (value) => {
+
+  }
+
+  return { setRoot, getRoot, insert, deleteNode, find, levelOrder, inorder, preorder, postorder, height, depth };
 };
 
 /* -------------------------------------------------------------------------------------*/
@@ -236,7 +252,7 @@ const testingArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 console.log(testingArray);
 let tree = Tree(testingArray);
 tree.setRoot();
-tree.insert(6);
+/* tree.insert(6); */
 /* tree.insert(18);
 tree.insert(19);
 tree.insert(20); */
@@ -245,3 +261,4 @@ console.log("Level Order Traversal: ", tree.levelOrder());
 console.log("Inorder traversal (left, root, right): ", tree.inorder());
 console.log("Preorder traversal (root, left, right): ", tree.preorder());
 console.log("Postorder traversal (left, right, root): ", tree.postorder());
+console.log("Height of Node: ", tree.height(tree.find(5)));
